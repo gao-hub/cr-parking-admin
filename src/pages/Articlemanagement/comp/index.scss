@@ -1,0 +1,10 @@
+.btnwrapper {
+  display: flex;
+  justify-content: center;
+  button:nth-child(1) {
+    margin-right: 30px;
+  }
+}
+.rowwrapper {
+  margin-bottom: 30px;
+}

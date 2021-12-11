@@ -1,0 +1,20 @@
+@import '~antd/lib/style/themes/default.less';
+
+.content {
+  margin: 24px 24px 0;
+  padding-bottom: 50px;
+  background: #fff;
+  :global {
+    .ant-pagination {
+      float: right;
+      margin-top: 10px;
+      margin-right: 30px;
+    }
+  }
+}
+
+@media screen and (max-width: @screen-sm) {
+  .content {
+    margin: 24px 0 0;
+  }
+}

@@ -1,0 +1,35 @@
+.titleContain {
+  display: flex;
+  align-items: center;
+  color: #333;
+}
+
+.line {
+  display: inline-block;
+  margin-right: 8px;
+  width: 3px;
+  height: 12px;
+  line-height: 14px;
+  background-color: #7AB6E8;
+}
+.titleTableHeader {
+  overflow: hidden;
+  display: flex;
+  justify-content:space-between;
+}
+.titleHeaderSet {
+  :global {
+    .ant-btn {
+      color: #0067D3;
+      // width: 70px;
+      height: 27px;
+      padding: 0 8px;
+      border-color: #0067D3;
+      margin-right: 10px;
+      &:hover {
+        color: #00B8DA;
+        border-color: #00B8DA;
+      }
+    }
+  }
+}

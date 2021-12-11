@@ -1,0 +1,21 @@
+.btnwrapper {
+  display: flex;
+  justify-content: center;
+  button:nth-child(1) {
+    margin-right: 30px;
+  }
+}
+
+.htmlWrapper {
+  max-width: 800px;
+  max-height: 1200px;
+  overflow: auto;
+  :global {
+    .image-wrap {
+      max-width: 800px;
+      img {
+        width: 100%;
+      }
+    }
+  }
+}

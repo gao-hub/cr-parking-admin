@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="197px" height="185px" viewBox="0 0 197 185" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.2 (67145) - http://www.bohemiancoding.com/sketch -->
+    <title>分组</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="55.2521797%" y1="-3.67238093%" x2="55.2521797%" y2="104.384551%" id="linearGradient-1">
+            <stop stop-color="#DFB38B" offset="0%"></stop>
+            <stop stop-color="#AC7452" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-2">
+            <stop stop-color="#E08E82" offset="0%"></stop>
+            <stop stop-color="#CD675B" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="分组">
+            <polygon id="路径" fill="url(#linearGradient-1)" points="51.7428571 16.0363636 76.0285714 13.86 99.1142857 61.8545455 116.771429 13.86 141.971429 15.2918182 120.771429 61.8545455 142.942857 61.8545455 142.942857 82.3581818 113.171429 82.3581818 113.057143 102.861818 143.057143 102.861818 150.2 126.973636 113.171429 126.973636 113.171429 184.704545 86.7714286 184.704545 86.7714286 126.973636 46.7714286 126.973636 54.1428571 102.861818 86.8857143 102.861818 87 81.1554545 54.1428571 81.1554545 54.1428571 61.8545455 77.9142857 61.8545455"></polygon>
+            <polygon id="路径" fill="url(#linearGradient-2)" points="0.771428571 7.44545455 21.2857143 0.744545455 54.1428571 61.8545455 54.1428571 102.861818 30.6571429 180.523636 10.5428571 175.025455 33.9142857 102.174545 33.9142857 63.7445455"></polygon>
+            <polygon id="路径" fill="url(#linearGradient-2)" points="196.257143 7.44545455 175.8 0.744545455 142.942857 61.8545455 142.942857 102.861818 166.428571 180.523636 186.542857 175.025455 163.171429 102.174545 163.171429 63.7445455"></polygon>
+        </g>
+    </g>
+</svg>
