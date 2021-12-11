@@ -94,6 +94,11 @@ export default [
             component: './MemberEquity/GetEquityManagementList',
           },
           {
+            path: '/memberEquity/SetMemberRank',
+            name: '会员等级设置',
+            component: './MemberEquity/SetMemberRankList',
+          },
+          {
             path: '/memberEquity/addEquity/edit',
             name: '修改权益',
             component: './MemberEquity/GetEquityManagementList/EditEquity'
