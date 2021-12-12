@@ -11,8 +11,6 @@ export default {
     total: '', //   总条数
     searchInfo: {}, //  搜索条件
     modifyInfoData: {}, //  修改详情
-    equityNameData: [], // 权益名称下拉存储
-    channelSelectData: [], // 存储渠道下拉列表
   },
 
   effects: {
@@ -41,11 +39,8 @@ export default {
       }
     },
 
-    // 发货
-    *onDelivery({ payload }, { call }) {
-      return yield call(api.onDelivery, payload);
-    },
-    // 获取详情（售后、修改物流单号）
+   
+    // 获取详情（修改）
     *getModifyInfo({ payload }, { call, put }) {
       const response = yield call(api.getModifyInfo, payload);
       if (response && response.status === 1) {
@@ -62,40 +57,11 @@ export default {
       return yield call(api.modifyManage, payload);
     },
 
-    // 修改物流单号
+    // 修改会员等级设置
     *modifyDeliverId({ payload }, { call }){
       return yield call(api.modifyDeliverId, payload);
     },
-
-    // 渠道下拉
-    *parentUtmSelector({ payload }, { call, put }) {
-      const response = yield call(api.parentUtmSelector, payload);
-      if(response && response.status == 1) {
-        const saveData = response.data;
-        yield put({
-          type: 'setChannelSelectData',
-          payload: saveData,
-        });
-      }
-      return response;
-    },
-
-    // 获取权益名称
-    *getEquityName({ payload }, { call, put }) {
-      const response = yield call(api.getEquityName, payload);
-      if (response && response.status === 1) {
-        const data = response.data;
-        yield put({
-          type: 'setEquityName',
-          payload: data,
-        });
-      }
-      return response;
-    },
-
-    *exportExcel({ payload }, { call }) {
-      yield call(api.exportFile, payload);
-    },
+  
   },
 
   reducers: {
@@ -126,18 +92,7 @@ export default {
         searchInfo: payload,
       };
     },
-    setChannelSelectData(state, { payload }) {
-      return {
-        ...state,
-        channelSelectData: payload
-      }
-    },
-    setEquityName(state, { payload }) {
-      return {
-        ...state,
-        equityNameData: payload
-      }
-    },
+  
     setModifyInfo(state, { payload }) {
       return {
         ...state,

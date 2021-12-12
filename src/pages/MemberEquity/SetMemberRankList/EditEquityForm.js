@@ -102,9 +102,7 @@ class EditEquity extends PureComponent {
       currPage,
       pageSize,
     } = this.props;
-    console.log(form, 'ff');
     form.validateFieldsAndScroll(async (err, values) => {
-      console.log('1');
       if (!err) {
         if (values.location && values.location.length) {
           values.location = values.location.join(',');

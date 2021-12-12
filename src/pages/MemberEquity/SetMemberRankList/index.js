@@ -66,9 +66,9 @@ class IndexComponent extends PureComponent {
             const { permission } = this.props;
             const action = (
               <Menu>
-                  <Menu.Item onClick={() => this.modifyHandler(record.id)}>
-                    修改
-                  </Menu.Item>
+                <Menu.Item onClick={() => this.modifyHandler(record.id)}>
+                  修改
+                </Menu.Item>
               </Menu>
             );
             return (
@@ -76,7 +76,7 @@ class IndexComponent extends PureComponent {
                 overlay={action}
                 disabled={
                   !(
-                    permission.includes('chuangrong:integralOrder:update') 
+                    permission.includes('chuangrong:integralOrder:update')
                   )
                 }
               >
@@ -91,7 +91,6 @@ class IndexComponent extends PureComponent {
       ],
       modifyChildVisible: false,
       afterSalesVisible: false,
-      deliveryVisible: false
     };
   }
 
@@ -195,7 +194,6 @@ class IndexComponent extends PureComponent {
       pageSize,
       modifyChildVisible,
       afterSalesVisible,
-      deliveryVisible,
     } = this.state;
     const values = {
       columns: this.state.syncColumns,
@@ -233,18 +231,7 @@ class IndexComponent extends PureComponent {
               pageSize={pageSize}
             />
           )}
-          {/* 发货 */}
-          {
-            deliveryVisible && <DeliveryForm
-              onCancel={() => {
-                this.setState({ deliveryVisible: false });
-              }}
-              salesId={salesId}
-              getList={this.getList}
-              currPage={currPage}
-              pageSize={pageSize}
-            />
-          }
+
         </PageHeaderWrapper>
       </Fragment>
     ) : null;
