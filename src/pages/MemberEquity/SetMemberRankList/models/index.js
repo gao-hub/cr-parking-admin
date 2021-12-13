@@ -52,10 +52,6 @@ export default {
       }
       return response;
     },
-    // 提交售后
-    *modifyManage({ payload }, { call }) {
-      return yield call(api.modifyManage, payload);
-    },
 
     // 修改会员等级设置
     *modifyDeliverId({ payload }, { call }){

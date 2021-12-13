@@ -94,9 +94,14 @@ export default [
             component: './MemberEquity/GetEquityManagementList',
           },
           {
-            path: '/memberEquity/SetMemberRank',
+            path: '/memberEquity/setMemberRank',
             name: '会员等级设置',
             component: './MemberEquity/SetMemberRankList',
+          },
+          {
+            path: '/memberEquity/diyGiftList',
+            name: '定制产品管理',
+            component: './MemberEquity/DiyGiftList',
           },
           {
             path: '/memberEquity/addEquity/edit',

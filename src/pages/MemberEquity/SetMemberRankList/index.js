@@ -6,7 +6,7 @@ import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import StandardTable from '@/components/StandardTable';
 import PermissionWrapper from '@/utils/PermissionWrapper';
 
-// 修改物流编号
+// 修改会员等级设置
 import EditEquityForm from './EditEquityForm';
 
 @PermissionWrapper
@@ -30,32 +30,32 @@ class IndexComponent extends PureComponent {
         },
         {
           title: '等级名称',
-          dataIndex: 'orderNo',
+          dataIndex: 'levelName',
         },
         {
           title: '所需成长值',
-          dataIndex: 'productName',
+          dataIndex: 'levelValue',
         },
         {
           title: '状态',
-          dataIndex: 'isShow',
+          dataIndex: 'levelStatus',
           render: (record, row) => {
-            if (row.isShow - 0 === 0) {
-              return '启用'
+            if (row.levelStatus - 0 === 0) {
+              return '禁用'
             }
-            if (row.isShow - 0 === 1) {
-              return '禁用';
+            if (row.levelStatus - 0 === 1) {
+              return '启用';
             }
             return false;
           }
         },
         {
           title: '更新人',
-          dataIndex: 'parentUtm'
+          dataIndex: 'updateName'
         },
         {
           title: '更新时间',
-          dataIndex: 'sendOrderTime',
+          dataIndex: 'updateTime',
         },
       ],
       syncColumns: [],
@@ -147,16 +147,6 @@ class IndexComponent extends PureComponent {
         </Button>
       </Fragment>
     );
-  };
-
-
-  exportExcel = () => {
-    const { dispatch } = this.props;
-    const formData = this.child.getFormValue();
-    dispatch({
-      type: 'MemberRank/exportExcel',
-      payload: formData,
-    });
   };
 
   // 修改会员等级信息

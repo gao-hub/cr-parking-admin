@@ -4,7 +4,7 @@ import exportExcel from '@/utils/exportExcel';
 
 // 获取列表
 export async function fetchList(params) {
-  return request(`${_baseApi}/integralOrder/list`, {
+  return request(`${_baseApi}/memberLevel/list`, {
     method: 'POST',
     body: params,
   });
@@ -13,15 +13,7 @@ export async function fetchList(params) {
 
 //  获取详情(售后)
 export async function getModifyInfo(params) {
-  return request(`${_baseApi}/integralOrder/info`, {
-    method: 'POST',
-    body: params,
-  });
-}
-
-//  修改售后退货积分
-export async function modifyManage(params) {
-  return request(`${_baseApi}/integralOrder/refund`, {
+  return request(`${_baseApi}/memberLevel/info`, {
     method: 'POST',
     body: params,
   });
@@ -29,7 +21,7 @@ export async function modifyManage(params) {
 
 //   修改
 export async function modifyDeliverId(params) {
-  return request(`${_baseApi}/integralOrder/update`, {
+  return request(`${_baseApi}/memberLevel/update`, {
     method: 'POST',
     body: params,
   });

@@ -333,6 +333,7 @@ class IndexComponent extends PureComponent {
               </>
             }
             <Divider />
+
             <Form.Item label="购买旅游商品是否获得成长值" {...formItemConfig}>
               {getFieldDecorator('buyTouristGoodsFlag', {
                 rules: [
@@ -387,6 +388,7 @@ class IndexComponent extends PureComponent {
                 </Form.Item>
               </>
             }
+
             <Divider />
             <Form.Item label="购买家居商品是否获得成长值" {...formItemConfig}>
               {getFieldDecorator('buyFurnitureGoodsFlag', {
@@ -474,7 +476,7 @@ class IndexComponent extends PureComponent {
               this.state.isShowBuyTouristGoods &&
               <>
                 <Form.Item label="成长值折比设置" {...formItemConfig}>
-                  {getFieldDecorator('touristGoodsRatio', {
+                  {getFieldDecorator('publishArticleRatio', {
                     rules: [
                       {
                         required: true, whitespace: true, validator: (rules, value, callback) => {
@@ -490,9 +492,9 @@ class IndexComponent extends PureComponent {
                         }
                       },
                     ],
-                    initialValue: infoData && infoData.isSet === 1 ? infoData.touristGoodsRatio.toString() : null,
+                    initialValue: infoData && infoData.isSet === 1 ? infoData.publishArticleRatio.toString() : null,
                   })(
-                    <Input placeholder="请输入成长值折比设置" maxLength={8} disabled={disabled} addonAfter="篇=1成长值" />
+                    <Input placeholder="请输入成长值折比设置" maxLength={8} disabled addonAfter="篇=1成长值" />
                   )}
                 </Form.Item>
                 <Form.Item label="每月最多可通过发布作品获得" {...formItemConfig}>

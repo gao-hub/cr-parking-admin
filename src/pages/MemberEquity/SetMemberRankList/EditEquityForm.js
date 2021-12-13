@@ -16,43 +16,43 @@ const RadioGroup = Radio.Group;
 const tenEquityOption = [
   {
     label: '生日礼遇',
-    value: 1,
+    value: 'SRLY',
   },
   {
     label: '升级有礼',
-    value: 2,
+    value: 'SJYL',
   },
   {
     label: '免费洗车',
-    value: 3,
+    value: 'MFXC',
   },
   {
     label: '专属客服',
-    value: 4,
+    value: 'ZSKF',
   },
   {
     label: '丰巢会员',
-    value: 5,
+    value: 'DCHY',
   },
   {
     label: '定制产品',
-    value: 6,
+    value: 'DZLW',
   },
   {
     label: '免费电影',
-    value: 7,
+    value: 'MFDY',
   },
   {
     label: '高铁出行',
-    value: 8,
+    value: 'GTCX',
   },
   {
     label: '免费体检',
-    value: 9,
+    value: 'MFTJ',
   },
   {
     label: '私人定制游艇',
-    value: 10,
+    value: 'SRDZYT',
   },
 ];
 
@@ -72,6 +72,8 @@ const childSrlyOption = [
   },
 ];
 
+
+
 @Form.create()
 @connect(({ MemberRank, loading, user }) => ({
   user,
@@ -89,7 +91,14 @@ class EditEquity extends PureComponent {
   }
 
   componentDidMount() {
+    const {
+      MemberRank: { modifyInfoData },
+    } = this.props;
 
+    console.log(modifyInfoData.leftEquityChecked);
+    const initCheckedValues = modifyInfoData.leftEquityChecked.split(',')
+    console.log(initCheckedValues)
+    this.setState({checkedValues:initCheckedValues})
   }
 
   //  确认修改
@@ -104,18 +113,14 @@ class EditEquity extends PureComponent {
     } = this.props;
     form.validateFieldsAndScroll(async (err, values) => {
       if (!err) {
-        if (values.location && values.location.length) {
-          values.location = values.location.join(',');
-        }
-        if (values.b && values.b.length) {
-          values.b = values.b.join(',');
-        }
         const { MemberRank = {}, getList, currPage, pageSize } = this.props;
         this.setState({ loading: true });
         const res = await dispatch({
           type: 'MemberRank/modifyDeliverId',
           payload: {
             ...values,
+            leftEquityChecked:values.leftEquityChecked.join(','),
+            levelCode: MemberRank.modifyInfoData.levelCode,
             id: MemberRank.modifyInfoData.id,
           },
         });
@@ -138,9 +143,23 @@ class EditEquity extends PureComponent {
 
   // 复选框改变时触发
   onCheckedChange = (checkedValues) => {
+    console.log(checkedValues,'new');
     this.setState({ checkedValues })
   }
 
+  /*
+    定制产品转译
+  */
+  formatDzlw = (dzlwVal, targetArr) => {
+    let dzlwValNum = Number(dzlwVal)
+    let str = ""
+    targetArr.map((item, index) => {
+      if (item.id === dzlwValNum) {
+        return str = item.productName
+      }
+    })
+    return str
+  }
   render() {
     const {
       form = {},
@@ -178,14 +197,14 @@ class EditEquity extends PureComponent {
         ]}
       >
         <Form>
-          <FormItem label="等级名称" {...formConfig} name="djmc">
+          <FormItem label="等级名称" {...formConfig} name="levelName">
             {
-              modifyInfoData && modifyInfoData.deliveryId
+              modifyInfoData && modifyInfoData.levelName
             }
           </FormItem>
 
           <FormItem label="所需成长值" {...formConfig}>
-            {getFieldDecorator('buyerId', {
+            {getFieldDecorator('levelValue', {
               rules: [
                 { required: true, message: '请输入所需成长值' },
                 {
@@ -198,16 +217,16 @@ class EditEquity extends PureComponent {
                     }
                   }
                 }],
-              initialValue: modifyInfoData && modifyInfoData.buyerId,
-            })(<Input placeholder="请输入所需成长值" maxLength={10} />)}
+              initialValue: modifyInfoData && modifyInfoData.levelValue,
+            })(<Input placeholder="请输入所需成长值" maxLength={9} />)}
           </FormItem>
 
           <Row span={24}>
             <Col span={12}>
               <FormItem label="关联权益" {...contentConfig} className={styles.qyLeftWrap}>
-                {getFieldDecorator('location', {
+                {getFieldDecorator('leftEquityChecked', {
                   rules: [{ required: true, message: '请选择关联权益' }],
-                  // initialValue: modifyInfoData && modifyInfoData.location,
+                  initialValue: modifyInfoData && modifyInfoData.leftEquityChecked.split(','),
                 })(
                   <Checkbox.Group style={{ width: '100%', marginTop: '10px' }} onChange={this.onCheckedChange}>
                     <Row gutter={[24, 18]}>
@@ -227,14 +246,14 @@ class EditEquity extends PureComponent {
               {/* 右列 - 生日礼遇的子项 */}
               <FormItem
                 {...formConfig}
-                style={{ marginBottom: '0', visibility: (checkedValues.includes(1)) ? "visible" : "hidden" }}
+                style={{ marginBottom: '0', visibility: (checkedValues.includes("SRLY")) ? "visible" : "hidden" }}
               >
-                {getFieldDecorator('b', checkedValues.includes(1) ? {
+                {getFieldDecorator('srlyVal', checkedValues.includes("SRLY") ? {
                   rules: [{ required: true, message: '请选择生日礼遇' }],
-                  // initialValue: modifyInfoData && modifyInfoData.location,
+                  initialValue: modifyInfoData && modifyInfoData.srlyVal,
                 } : {
                   rules: [{ required: false, message: '请选择生日礼遇' }],
-                  // initialValue: modifyInfoData && modifyInfoData.location,
+                  initialValue: modifyInfoData && modifyInfoData.srlyVal,
                 })(
                   <Checkbox.Group style={{ width: '120%', marginBottom: '10px' }}>
                     {childSrlyOption.map(item => (
@@ -248,9 +267,9 @@ class EditEquity extends PureComponent {
               {/* 右列 - 升级有礼的子项 */}
               <FormItem
                 {...formConfig}
-                style={{ marginBottom: '0', visibility: (checkedValues.includes(2)) ? "visible" : "hidden" }}
+                style={{ marginBottom: '0', visibility: (checkedValues.includes("SJYL")) ? "visible" : "hidden" }}
               >
-                {getFieldDecorator('c', checkedValues.includes(2) ? {
+                {getFieldDecorator('sjylVal', checkedValues.includes("SJYL") ? {
                   rules: [
                     {
                       required: true,
@@ -268,20 +287,20 @@ class EditEquity extends PureComponent {
                       }
                     }
                   ],
-                  // initialValue: modifyInfoData && modifyInfoData.location,
+                  initialValue: modifyInfoData && modifyInfoData.sjylVal,
                 } : {
                   rules: [{ required: false, message: '请输入升级奖励积分' }],
-                  // initialValue: modifyInfoData && modifyInfoData.location,
+                  initialValue: modifyInfoData && modifyInfoData.sjylVal,
                 })(
-                  <Input size="small" maxLength={10} placeholder="请输入升级奖励积分" />
+                  <Input size="small" maxLength={9} placeholder="请输入升级奖励积分" />
                 )}
               </FormItem>
               {/* 右列 - 免费洗车的子项 */}
               <FormItem
                 {...formConfig}
-                style={{ marginBottom: '36px', visibility: (checkedValues.includes(3)) ? "visible" : "hidden" }}
+                style={{ marginBottom: '36px', visibility: (checkedValues.includes('MFXC')) ? "visible" : "hidden" }}
               >
-                {getFieldDecorator('d', checkedValues.includes(3) ? {
+                {getFieldDecorator('mfxcVal', checkedValues.includes('MFXC') ? {
                   rules: [{
                     required: true,
                     validator: (rule, value, callback) => {
@@ -298,10 +317,10 @@ class EditEquity extends PureComponent {
                     }
                   },
                   ],
-                  // initialValue: modifyInfoData && modifyInfoData.location,
+                  initialValue: modifyInfoData && modifyInfoData.mfxcVal,
                 } : {
                   rules: [{ required: false, message: '请输入每年领取数量' }],
-                  // initialValue: modifyInfoData && modifyInfoData.location,
+                  initialValue: modifyInfoData && modifyInfoData.mfxcVal,
                 })(
                   <Input size="small" maxLength={3} placeholder="请输入每年领取数量" />
                 )}
@@ -309,9 +328,9 @@ class EditEquity extends PureComponent {
               {/* 右列 - 丰巢会员的子项 */}
               <FormItem
                 {...formConfig}
-                style={{ marginBottom: '0px', visibility: (checkedValues.includes(5)) ? "visible" : "hidden" }}
+                style={{ marginBottom: '0px', visibility: (checkedValues.includes('DCHY')) ? "visible" : "hidden" }}
               >
-                {getFieldDecorator('e', checkedValues.includes(5) ? {
+                {getFieldDecorator('fchyVal', checkedValues.includes('DCHY') ? {
                   rules: [{
                     required: true,
                     validator: (rule, value, callback) => {
@@ -328,10 +347,10 @@ class EditEquity extends PureComponent {
                     }
                   },
                   ],
-                  // initialValue: modifyInfoData && modifyInfoData.location,
+                  initialValue: modifyInfoData && modifyInfoData.fchyVal,
                 } : {
                   rules: [{ required: false, message: '请输入每年领取数量' }],
-                  // initialValue: modifyInfoData && modifyInfoData.location,
+                  initialValue: modifyInfoData && modifyInfoData.fchyVal,
                 })(
                   <Input size="small" maxLength={3} placeholder="请输入每年领取数量" />
                 )}
@@ -339,24 +358,24 @@ class EditEquity extends PureComponent {
               {/* 右列 - 定制产品的子项 */}
               <FormItem
                 {...formConfig}
-                style={{ marginBottom: '0px', visibility: (checkedValues.includes(6)) ? "visible" : "hidden" }}
+                style={{ marginBottom: '0px', visibility: (checkedValues.includes('DZLW')) ? "visible" : "hidden" }}
               >
-                {getFieldDecorator('f', checkedValues.includes(6) ? {
+                {getFieldDecorator('dzlwVal', checkedValues.includes('DZLW') ? {
                   rules: [{ required: true, message: '请选择实物奖品' }],
-                  // initialValue: modifyInfoData && modifyInfoData.location,
+                  initialValue: modifyInfoData && this.formatDzlw(modifyInfoData.dzlwVal, modifyInfoData.productList),
                 } : {
                   rules: [{ required: false, message: '请选择实物奖品' }],
-                  // initialValue: modifyInfoData && modifyInfoData.location,
+                  initialValue: modifyInfoData && this.formatDzlw(modifyInfoData.dzlwVal, modifyInfoData.productList),
                 })(
                   <Select
                     placeholder="请选择实物奖品"
                     size="small"
                   >
-                    {modifyInfoData.f &&
-                      modifyInfoData.f.map((item, index) => {
+                    {modifyInfoData.productList &&
+                      modifyInfoData.productList.map((item, index) => {
                         return (
-                          <Option key={index} value={item.roleId}>
-                            {item.roleName}
+                          <Option key={index} value={item.id}>
+                            {item.productName}
                           </Option>
                         );
                       })}
@@ -366,9 +385,9 @@ class EditEquity extends PureComponent {
               {/* 右列 - 免费电影的子项 */}
               <FormItem
                 {...formConfig}
-                style={{ marginBottom: '0px', visibility: (checkedValues.includes(7)) ? "visible" : "hidden" }}
+                style={{ marginBottom: '0px', visibility: (checkedValues.includes('MFDY')) ? "visible" : "hidden" }}
               >
-                {getFieldDecorator('g', checkedValues.includes(7) ? {
+                {getFieldDecorator('mfdyVal', checkedValues.includes('MFDY') ? {
                   rules: [{
                     required: true,
                     validator: (rule, value, callback) => {
@@ -384,10 +403,10 @@ class EditEquity extends PureComponent {
                       }
                     }
                   }],
-                  // initialValue: modifyInfoData && modifyInfoData.location,
+                  initialValue: modifyInfoData && modifyInfoData.mfdyVal,
                 } : {
                   rules: [{ required: false, message: '请输入每年领取数量' }],
-                  // initialValue: modifyInfoData && modifyInfoData.location,
+                  initialValue: modifyInfoData && modifyInfoData.mfdyVal,
                 })(
                   <Input size="small" maxLength={3} placeholder="请输入每年领取数量" />
                 )}
@@ -395,9 +414,9 @@ class EditEquity extends PureComponent {
               {/* 右列 - 高铁出行的子项 */}
               <FormItem
                 {...formConfig}
-                style={{ marginBottom: '0px', visibility: (checkedValues.includes(8)) ? "visible" : "hidden" }}
+                style={{ marginBottom: '0px', visibility: (checkedValues.includes('GTCX')) ? "visible" : "hidden" }}
               >
-                {getFieldDecorator('h', checkedValues.includes(8) ? {
+                {getFieldDecorator('gtcxVal', checkedValues.includes('GTCX') ? {
                   rules: [{
                     required: true,
                     validator: (rule, value, callback) => {
@@ -413,10 +432,10 @@ class EditEquity extends PureComponent {
                       }
                     }
                   }],
-                  // initialValue: modifyInfoData && modifyInfoData.location,
+                  initialValue: modifyInfoData && modifyInfoData.gtcxVal,
                 } : {
                   rules: [{ required: false, message: '请输入每年领取数量' }],
-                  // initialValue: modifyInfoData && modifyInfoData.location,
+                  initialValue: modifyInfoData && modifyInfoData.gtcxVal,
                 })(
                   <Input size="small" maxLength={3} placeholder="请输入每年领取数量" />
                 )}
@@ -425,15 +444,15 @@ class EditEquity extends PureComponent {
           </Row>
 
           <FormItem label="等级描述" {...formConfig} >
-            {getFieldDecorator('q', {
-              initialValue: modifyInfoData && modifyInfoData.buyerId,
+            {getFieldDecorator('levelRemark', {
+              initialValue: modifyInfoData && modifyInfoData.levelRemark,
             })(<Input placeholder="请输入等级描述" maxLength={200} />)}
           </FormItem>
 
           <FormItem label="状态" {...formConfig}>
-            {getFieldDecorator('isShow', {
+            {getFieldDecorator('levelStatus', {
               rules: [{ required: true, message: '请选择状态' }],
-              // initialValue: modifyInfoData && modifyInfoData.isShow
+              initialValue: modifyInfoData && modifyInfoData.levelStatus
             })(
               <RadioGroup allowClear>
                 <Radio value={1}>启用</Radio>
