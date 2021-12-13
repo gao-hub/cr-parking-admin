@@ -29,7 +29,7 @@ const defcolumns = [
           hoverable
           style={{ width: 50 }}
           bodyStyle={{ padding: 0 }}
-          cover={<img src={row.typePic} />}
+          cover={<img src={row.productImg} />}
         />
       ) : '/',
   },
@@ -79,12 +79,6 @@ export default class template extends PureComponent {
     pageSize: 10,
     title: '添加',
     syncColumns: [],
-    initColumns: [
-      'key',
-      'levelName',
-      'levelStandard',
-      'levelDiscount',
-    ],
     staticColumns: [
       {
         title: '操作',
@@ -93,7 +87,7 @@ export default class template extends PureComponent {
           const action = (
             <Menu>
               {
-                permission.includes('chuangrong:userleave:update') ?
+                // permission.includes('chuangrong:userleave:update') ?
                   <Menu.Item onClick={async () => {
                     const { dispatch } = this.props;
                     await dispatch({
@@ -105,13 +99,15 @@ export default class template extends PureComponent {
                     this.modifyChild.changeVisible(true, 2)
                   }}>
                     <Icon type="edit" />编辑
-                  </Menu.Item> : null
+                  </Menu.Item> 
+                  // : null
               }
               {
-                permission.includes('chuangrong:userleave:delete') ?
+                // permission.includes('chuangrong:userleave:delete') ?
                   <Menu.Item onClick={() => this.deleteData(record.id)}>
                     <Icon type="close" />删除
-                  </Menu.Item> : null
+                  </Menu.Item> 
+                  // : null
               }
             </Menu>
           )
@@ -175,7 +171,6 @@ export default class template extends PureComponent {
       payload: {
         currPage,
         pageSize,
-        ...this.props.diyGiftConfig.searchInfo
       }
     })
   }

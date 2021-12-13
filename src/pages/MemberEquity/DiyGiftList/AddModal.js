@@ -34,21 +34,6 @@ export default class Modify extends PureComponent {
     });
   };
 
-  checkLevelName = async (rules, value, callback) => {
-    if (!value) {
-      callback('请输入奖品名称')
-    }
-    callback()
-  }
-
-  // checkLevelStandard = async (rules, value, callback) => {
-  //   if (!value && value != 0) {
-  //     callback('请输入认购标准')
-  //   }
-
-  //   callback()
-  // }
-
   handleOk = async () => {
     const { dispatch, form } = this.props;
     form.validateFieldsAndScroll(async (err, values) => {
@@ -87,7 +72,7 @@ export default class Modify extends PureComponent {
     };
     return (
       <Modal
-        title={this.state.type == 1 ? '新增代理商' : '修改代理商'}
+        title={this.state.type == 1 ? '添加奖品' : '编辑奖品'}
         bodyStyle={{ maxHeight: 470, overflow: 'auto' }}
         visible={this.state.visible}
         onOk={this.handleOk}
@@ -101,13 +86,13 @@ export default class Modify extends PureComponent {
             {...formConfig}
           >
             {getFieldDecorator('levelName', {
-              rules: [{ required: true, validator: this.checkLevelName }],
+              rules: [{ required: true, message: "请输入奖品名称" }],
               initialValue: this.state.type == 2 ? modifyInfo && modifyInfo.levelName : null
             })(
               <Input placeholder={'请输入奖品名称'} maxLength={10} />
             )}
           </FormItem>
-          <FormItem {...formConfig} label={'图片'}>
+          <FormItem {...formConfig} label={'图片'} extra={<span style={{ fontSize: '10px' }}>(注：建议尺寸96x96像素，支持JPG、PNG、JPEG格式)</span>}>
             {getFieldDecorator('levelUrl', {
               rules: [{
                 required: true,
@@ -124,11 +109,11 @@ export default class Modify extends PureComponent {
                 }}
                 setIconUrl={(url) => this.props.form.setFieldsValue({ levelUrl: url })}
               >
-                {
+                {/* {
                   this.state.fileList.length && this.state.fileList[0].response && this.state.fileList[0].response.status == '99' ?
                     <span style={{ color: 'red', marginLeft: '5px' }}>{this.state.fileList[0].response.statusDesc}</span>
                     : null
-                }
+                } */}
               </Upload>
             )}
           </FormItem>
@@ -136,7 +121,7 @@ export default class Modify extends PureComponent {
             label="成本价"
             {...formConfig}
           >
-            {getFieldDecorator('levelStandard', {
+            {getFieldDecorator('a', {
               rules: [{
                 required: true,
                 validator: (rule, value, callback) => {
@@ -144,10 +129,10 @@ export default class Modify extends PureComponent {
                     callback('请输入成本价')
                     return
                   }
-                  const regEn = /^[0-9]*$/;
-                  const regEn1 = /[^%&',;=?$\x22]+/;
-                  if (!regEn.test(value)&&regEn1.test(value)) {
-                    callback('请输入有效的免费洗车每年领取数量（整数）');
+                  const regEn = /^[0-9,<=>.≤≥]+$/;
+                  //--> 特殊字符+数字
+                  if (value && !regEn.test(value)) {
+                    callback('请输入有效的成本价（只可输入数字符号）');
                   } else {
                     callback();
                   }
@@ -155,12 +140,7 @@ export default class Modify extends PureComponent {
               }],
               initialValue: this.state.type == 2 ? modifyInfo && modifyInfo.levelStandard : null
             })(
-              <Input placeholder={'请输入成本价'} onChange={(e) => {
-                const value = e.target.value;
-                setTimeout(() => {
-                  this.props.form.setFieldsValue({ levelStandard: value.replace(/\D/g, '') })
-                }, 30)
-              }} />
+              <Input placeholder={'请输入成本价'} maxLength={10} />
             )}
           </FormItem>
           <FormItem
@@ -168,15 +148,25 @@ export default class Modify extends PureComponent {
             {...formConfig}
           >
             {getFieldDecorator('levelStandard', {
-              rules: [{ required: true, validator: this.checkLevelStandard }],
+              rules: [{
+                required: true,
+                validator: (rule, value, callback) => {
+                  if (!value) {
+                    callback('请输入排序')
+                    return
+                  }
+                  const regEn = /^[0-9]*$/;
+                  //--> 特殊字符+数字
+                  if (!regEn.test(value)) {
+                    callback('请输入有效的排序（数字）');
+                  } else {
+                    callback();
+                  }
+                }
+              }],
               initialValue: this.state.type == 2 ? modifyInfo && modifyInfo.levelStandard : null
             })(
-              <Input placeholder={'请输入排序'} onChange={(e) => {
-                const value = e.target.value;
-                setTimeout(() => {
-                  this.props.form.setFieldsValue({ levelStandard: value.replace(/\D/g, '') })
-                }, 30)
-              }} />
+              <Input placeholder={'请输入排序'} maxLength={10} />
             )}
           </FormItem>
           <FormItem label="状态" {...formConfig}>
@@ -190,26 +180,6 @@ export default class Modify extends PureComponent {
               </RadioGroup>
             )}
           </FormItem>
-          {/* <FormItem
-            label="认购优惠"
-            {...formConfig}
-          >
-            {getFieldDecorator('levelDiscount', {
-              rules: [{ required: true, validator: (rules, value, callback)=>{
-                if(!value){
-                  callback('请填写认购优惠')
-                }
-                if(Number(value) < 0 || Number(value) > 100) {
-                  callback('请输入大于等于0%,小于等于100%的认购优惠')
-                }
-                if (!value.toString().match(/^\d+([.]{1}[0-9]{1,2}){0,1}$/)) callback('必须为整数或者小数，小数点后2位');
-                callback()
-              }}],
-              initialValue: this.state.type == 2 ? modifyInfo && modifyInfo.levelDiscount : null
-            })(
-              <Input placeholder={'请输入认购优惠'} addonAfter={'%'} style={{width: '100%' }}/>
-            )}
-          </FormItem> */}
 
         </Form>
       </Modal>

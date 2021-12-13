@@ -8,7 +8,6 @@ export default {
   state: {
     list: [],  //   列表
     total: '',  //   总条数
-    searchInfo: {},  //  搜索条件
     modifyInfo: undefined
   },
 
